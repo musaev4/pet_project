@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Home{{ block.super }}
+{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'components/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'components/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'components/card.css' %}">
+
+{% endblock %}
+{% block nav %}
+    {% include 'components/navbar.html' %}
+{% endblock %}
+{% block content %}
+    <a href="{% url 'create_nft' %}">
+        <button class="bg-green-800 mt-4 hover:bg-green-600 text-gray-100 font-bold py-2 px-4 rounded inline-flex items-center mb-4">Создать</button>
+    </a>
+    <hr>
+    <div class="nft-container">
+        {% for n in nft %}
+            <div class="nft">
+                <div class='main'>
+                    {% if n.image %}
+                        <img class='tokenImage' src="{{ n.image.url }}" alt="NFT"/>
+                    {% endif %}
+                    <h2>{{ n.title }}</h2>
+                    <p class='description'>{{ n.desc }}</p>
+                    <div class='tokenInfo'>
+                        <div class="price">
+                            <p>{{ n.price }}ETH</p>
+                        </div>
+                    </div>
+                    <div class='creator'>
+                        <p>
+                            <ins>Автор:</ins>
+                            {{ n.owner }}
+                        </p>
+                    </div>
+                    <div class="creator">
+                        <p>
+                            <ins>Колекции:</ins>
+                            {% for collection in n.collections.all %}
+                                {{ collection.title }}
+                            {% endfor %}
+                        </p>
+                    </div>
+                    <div class="creator ">
+                        <p>
+                            <ins>Теги:</ins>
+                            {% for tag in n.tags.all %}
+                                {{ tag.name }}
+                            {% endfor %}
+                        </p>
+                    </div>
+                    <div class="mt-4">
+                        <hr/>
+                    </div>
+                    <div class="d-flex">
+                        <a href="{% url 'update_nft' id=n.id %}">
+                            <button type="button"
+                                    class="bg-blue-500 mt-4 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                        </a>
+                        <a href="{% url 'delete_nft' id=n.id %}">
+                            <button type="button"
+                                    class="bg-red-600 mt-4 hover:bg-red-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                                <i class="fa-solid fa-trash"></i></button>
+                        </a></div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% include 'components/pagination.html' %}
+{% endblock %}
+{% block footer %}
+    {% include 'components/footer.html' %}
+{% endblock %}
+{% block script %}
+    {{ block.super }}
+{% endblock %}

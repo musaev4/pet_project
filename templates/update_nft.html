@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    UPdate{{ block.super }}
+{% endblock %}
+{% block styles %}
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'components/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'components/footer.css' %}">
+{% endblock %}
+{% block nav %}
+    {% include 'components/navbar.html' %}
+{% endblock %}
+{% block content %}
+<div class="container mx-auto">
+    <form action="{% url 'update_nft' id=nft.id %}" method="post" enctype="multipart/form-data" class="max-w-lg mx-auto bg-gray-1000 shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label class="block text-white">Заголовок:</label>
+            <input name="title" value="{{ nft.title }}" placeholder="title" type="text" class="form-input bg-gray-900 text-white" required>
+        </div>
+        <div class="mb-4">
+            <label class="block text-white">Изображение:</label>
+            {% if nft.image %}
+                <p class="text-white">Выбранное изображение:</p>
+                <p><a href="{{ nft.image.url }}" class="text-blue-400">{{ nft.image.url }}</a></p>
+            {% endif %}
+            <input name="image" placeholder="Изображение" type="file" class="form-input bg-gray-900 text-white">
+        </div>
+        <div class="mb-4">
+            <label class="block text-white">Описание:</label>
+            <textarea name="description" placeholder="Описание" class="form-textarea bg-gray-900 text-white" required>{{ nft.description }}</textarea>
+        </div>
+        <div class="mb-4">
+            <label class="block text-white">Контент файл:</label>
+            <p class="text-white">{% if nft.content_file %}
+                <p>Выбранный файл:</p>
+                <a href="{{ nft.content_file.url }}" class="text-blue-400">{{ nft.content_file.url }}</a>
+            {% endif %}
+            </p>
+            <input name="content_file" placeholder="Контент файл" type="file" class="form-input bg-gray-900 text-white">
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-white">Коллекции:</label>
+            <select name="collections" multiple class="form-multiselect bg-gray-900 text-white" required>
+                <option selected disabled>Select collection</option>
+                {% for collection in collections %}
+                    <option value="{{ collection.id }}" {% if collection.id in nft.collections.all %} selected {% endif %}>
+                        {{ collection.title }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-white">Теги:</label>
+            <select name="tags" multiple class="form-multiselect bg-gray-900 text-white" required>
+                <option selected disabled>Select tags</option>
+                {% for tag in tags %}
+                    {% if tag.id in nft.tags.all %}
+                        <option value="{{ tag.id }}" selected>{{ tag.name }}</option>
+                    {% else %}
+                        <option value="{{ tag.id }}">{{ tag.name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <button type="submit" class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">Обновить</button>
+        </div>
+
+    </form>
+</div>
+{% endblock %}
+{% block footer %}
+    {% include 'components/footer.html' %}
+{% endblock %}
+{% block script %}
+    {{ block.super }}
+{% endblock %}

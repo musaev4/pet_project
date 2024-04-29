@@ -1,0 +1,92 @@
+/* Стили для навигационной панели */
+.nav-bar {
+    background-color: #222;
+    overflow: hidden;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.nav-bar a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.nav-bar a:hover {
+    background-color: #555;
+}
+
+.search-container {
+    float: right;
+}
+
+input[type="text"] {
+    padding: 7px;
+    margin-top: 8px;
+    font-size: 16px;
+    border: none;
+}
+
+input[type="text"]::placeholder {
+    color: #ddd;
+}
+
+button[type="submit"] {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #555;
+}
+
+/* Стили для бургер-меню */
+.burger-menu {
+    display: none;
+    float: right;
+    padding: 15px 10px;
+    background-color: #222;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.logo {
+    float: left;
+    padding: 10px 20px;
+}
+
+@media screen and (max-width: 600px) {
+    .nav-bar a, .search-container, .logo {
+        display: none;
+    }
+
+    .burger-menu {
+        display: block;
+    }
+
+    .nav-bar.responsive {
+        position: relative;
+    }
+
+    .nav-bar.responsive .burger-menu {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .nav-bar.responsive a, .nav-bar.responsive .search-container {
+        float: none;
+        display: block;
+        text-align: left;
+        width: 100%;
+        padding: 10px;
+    }
+}

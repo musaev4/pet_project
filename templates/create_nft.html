@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Create{{ block.super }}
+{% endblock %}
+{% block styles %}
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'components/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'components/footer.css' %}">
+{% endblock %}
+{% block nav %}
+    {% include 'components/navbar.html' %}
+{% endblock nav %}
+{% block content %}
+    <div class="container mx-auto">
+    <form action="{% url 'create_nft' %}" method="post" enctype="multipart/form-data" class="w-full max-w-lg mx-auto bg-gray-1000 shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        {% csrf_token %}
+        <div class="mb-4 mt-4">
+            <label for="title" class="block mb-2 text-white">Заголовок:</label>
+            <input id="title" name="title" placeholder="Заголовок" type="text" class="block mb-2 text-sm font-medium text-gray-0 dark:text-white bg-gray-900 form-input" required>
+        </div>
+        <div class="mb-4">
+            <label for="content_file" class="block mb-2 text-white">Изображение:</label>
+            <input id="content_file" name="content_file" placeholder="Изображение" type="file" class="form-input bg-gray-900 text-white" required>
+        </div>
+        <div class="mb-4">
+            <label for="description" class="block mb-2 text-white">Описание:</label>
+            <textarea id="description" name="description" placeholder="Описание" class="form-textarea bg-gray-900 text-white" required></textarea>
+        </div>
+
+        <div class="mb-4">
+            <label for="image" class="block mb-2 text-white">Контент файл:</label>
+            <input id="image" name="image" placeholder="Контент файл" type="file" class="form-input bg-gray-900 text-white" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="collection" class="block mb-2 text-white">Коллекции:</label>
+            <select id="collection" name="collection[]" multiple class="form-multiselect bg-gray-900 text-white" required>
+                <option selected disabled>Select collection</option>
+                {% for collection in collections %}
+                    <option value="{{ collection.id }}">{{ collection.title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="tags" class="block mb-2 text-white">Теги:</label>
+            <select id="tags" name="tags[]" multiple class="form-multiselect bg-gray-900 text-white" required>
+                <option selected disabled>Select tags</option>
+                {% for tag in tags %}
+                    <option value="{{ tag.id }}">{{ tag.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <button type="submit" class="btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full">Сохранить</button>
+        </div>
+    </form>
+</div>
+
+
+
+
+{% endblock %}
+{% block footer %}
+    {% include 'components/footer.html' %}
+{% endblock footer %}
+{% block script %}
+    {{ block.super }}
+{% endblock %}

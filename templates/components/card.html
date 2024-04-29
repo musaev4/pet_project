@@ -1,0 +1,40 @@
+<div class="nft-container">
+    {% for n in nft %}
+        <div class="nft">
+            <div class='main'>
+                {% if n.image %}
+                    <img class='tokenImage' src="{{ n.image.url }}" alt="NFT"/>
+                {% endif %}
+                <h3>{{ n.title }}</h3>
+                <p class='description'>{{ n.desc }}</p>
+                <div class='tokenInfo'>
+                    <div class="price">
+                        <p>{{ n.price }}ETH</p>
+                    </div>
+                </div>
+                <div class='creator'>
+                    <p>
+                        <ins>Автор:</ins>
+                        {{ n.owner }}
+                    </p>
+                </div>
+
+                <p>
+                    {% for tag in n.tags.all %}
+                    	{{ tag.name }}
+                    {% endfor %}
+
+                </p>
+                <hr/>
+                <div class="d-flex">
+                    <a href="{% url 'update_nft' id=n.id %}">
+                        <button type="button" class="btn btn-warning "><i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                    </a>
+                    <a href="{% url 'delete_nft' id=n.id %}">
+                        <button type="button" class="btn btn-danger ms-2"><i class="fa-solid fa-trash"></i></button>
+                    </a></div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
